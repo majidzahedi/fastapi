@@ -1,7 +1,9 @@
 anyio==3.5.0
 asgiref==3.5.0
 autopep8==1.6.0
+bcrypt==3.2.0
 certifi==2021.10.8
+cffi==1.15.0
 charset-normalizer==2.0.12
 click==8.1.2
 dnspython==2.2.1
@@ -15,10 +17,12 @@ itsdangerous==2.1.2
 Jinja2==3.1.1
 MarkupSafe==2.1.1
 orjson==3.6.8
+passlib==1.7.4
 psycopg==3.0.11
 psycopg-binary==3.0.11
 psycopg2-binary==2.9.3
 pycodestyle==2.8.0
+pycparser==2.21
 pydantic==1.9.0
 python-dotenv==0.20.0
 python-multipart==0.0.5
