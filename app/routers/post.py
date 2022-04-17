@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends, Response, APIRouter
 from sqlalchemy.orm import Session
-from .. import models, schema
+from .. import models, schema, oauth
 from ..database import get_db
 from typing import List
 
@@ -17,7 +17,7 @@ def posts(db: Session = Depends(get_db)):
 
 
 @router.get('/{id}', response_model=schema.Post)
-def get_post(id: int, db: Session = Depends(get_db)):
+def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth.get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
 
     if not post:
@@ -28,7 +28,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=schema.Post)
-def create_post(post: schema.PostCreate, db: Session = Depends(get_db)):
+def create_post(post: schema.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth.get_current_user)):
     new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()
@@ -36,8 +36,8 @@ def create_post(post: schema.PostCreate, db: Session = Depends(get_db)):
     return new_post
 
 
-@router.put('/id}', status_code=status.HTTP_202_ACCEPTED, response_model=schema.Post)
-def update_post(id: int, updated_post: schema.PostCreate, db: Session = Depends(get_db)):
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED, response_model=schema.Post)
+def update_post(id: int, updated_post: schema.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth.get_current_user)):
 
     post = db.query(models.Post).filter(models.Post.id == id)
 
@@ -51,7 +51,7 @@ def update_post(id: int, updated_post: schema.PostCreate, db: Session = Depends(
 
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db)):
+def delete_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth.get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id)
 
     if not post.first():
