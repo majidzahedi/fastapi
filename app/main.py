@@ -1,9 +1,9 @@
 from fastapi import Depends, FastAPI
-from .import models
-from .database import engin
+# from .import models
+# from .database import engin
 from .routers import post, user, auth, vote
 
-models.Base.metadata.create_all(bind=engin)
+# models.Base.metadata.create_all(bind=engin)
 
 app = FastAPI()
 
